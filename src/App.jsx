@@ -1,11 +1,23 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import Groq from 'groq-sdk';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-const client = new Groq({
-  apiKey: import.meta.env.VITE_GROQ_API_KEY,
-  dangerouslyAllowBrowser: true,
-});
+// Native fetch wrapper — avoids Groq SDK browser compatibility issues on Safari
+async function groqChat(messages, maxTokens) {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+      max_tokens: maxTokens,
+      messages,
+    }),
+  });
+  const data = await res.json();
+  return data.choices[0]?.message?.content || "I'm here with you.";
+}
 
 // Fix 1 & 3: static openers — no API call
 const OPENER_FIRST =
@@ -229,15 +241,10 @@ Additional guidelines:
     ];
 
     try {
-      const res = await client.chat.completions.create({
-        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
-        max_tokens: 400,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...apiMessages,
-        ],
-      });
-      const text = res.choices[0]?.message?.content || "I'm here with you.";
+      const text = await groqChat(
+        [{ role: 'system', content: systemPrompt }, ...apiMessages],
+        400
+      );
       const aiMsg = { role: 'assistant', content: text };
       setVisibleMessages([...newVisible, aiMsg]);
       // Accumulate real exchanges into full history for future siren events
