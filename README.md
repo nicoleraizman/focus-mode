@@ -2,7 +2,7 @@
 
 A wartime study focus tool for university students in Israel.
 
-**Live Demo:** _coming soon_
+**Live Demo:** focus-mode-seven.vercel.app
 
 ---
 
