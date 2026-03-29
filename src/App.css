@@ -1,0 +1,648 @@
+/* ─── Reset & Base ──────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f5f0e8;
+  --bg-card: #faf7f2;
+  --border: #e0d8cc;
+  --text: #2c2418;
+  --text-muted: #8a7b68;
+  --amber: #c17f3a;
+  --amber-light: #f0e4d0;
+  --amber-dark: #9a6228;
+  --blue: #3a6fa8;
+  --blue-light: #d0e0f0;
+  --siren: #e05c2a;
+  --siren-light: #fde8df;
+  --green: #4a8c5c;
+  --green-light: #d8f0e0;
+  --shadow: 0 2px 12px rgba(44, 36, 24, 0.08);
+  --shadow-lg: 0 8px 32px rgba(44, 36, 24, 0.14);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────────── */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0; }
+  40% { opacity: 1; }
+}
+
+.fade-up {
+  animation: fadeUp 0.4s ease both;
+}
+
+/* ─── App Shell ─────────────────────────────────────────────────────────────── */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 16px 80px;
+}
+
+.screen {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ─── Setup Screen ──────────────────────────────────────────────────────────── */
+
+.setup-header {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.app-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.4rem;
+  color: var(--amber-dark);
+  line-height: 1.1;
+}
+
+.app-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 6px;
+}
+
+/* ─── Card ──────────────────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  box-shadow: var(--shadow);
+}
+
+.card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  color: var(--amber-dark);
+  margin-bottom: 16px;
+}
+
+/* ─── Time Adjuster ─────────────────────────────────────────────────────────── */
+
+.time-adjuster {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.time-adjuster + .time-adjuster {
+  border-top: 1px solid var(--border);
+}
+
+.adjuster-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.adjuster-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.adj-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--amber);
+  background: transparent;
+  color: var(--amber);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.adj-btn:hover {
+  background: var(--amber);
+  color: #fff;
+}
+
+.adj-value {
+  min-width: 60px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ─── Task Input ────────────────────────────────────────────────────────────── */
+
+.task-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.task-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.task-input:focus {
+  border-color: var(--amber);
+}
+
+.task-input::placeholder {
+  color: var(--text-muted);
+}
+
+.add-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--amber);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.add-btn:hover {
+  background: var(--amber-dark);
+}
+
+/* ─── Task List ─────────────────────────────────────────────────────────────── */
+
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  gap: 8px;
+  transition: opacity 0.2s;
+}
+
+.task-item.done {
+  opacity: 0.55;
+}
+
+.task-item.done .task-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-text {
+  flex: 1;
+  font-size: 0.93rem;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.remove-btn:hover {
+  color: var(--siren);
+  background: var(--siren-light);
+}
+
+.task-check-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.task-check-label.disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.task-check-label input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--amber);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.task-check-label.disabled input[type="checkbox"] {
+  cursor: default;
+}
+
+.empty-hint {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-style: italic;
+  text-align: center;
+  padding: 8px 0;
+}
+
+/* ─── Begin Button ──────────────────────────────────────────────────────────── */
+
+.begin-btn {
+  width: 100%;
+  padding: 15px;
+  background: var(--amber);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 14px rgba(193, 127, 58, 0.35);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.begin-btn:hover:not(:disabled) {
+  background: var(--amber-dark);
+  box-shadow: 0 6px 18px rgba(193, 127, 58, 0.45);
+  transform: translateY(-1px);
+}
+
+.begin-btn:disabled {
+  background: #d4c8b8;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ─── Session Screen ────────────────────────────────────────────────────────── */
+
+.session-screen {
+  align-items: center;
+  padding-top: 20px;
+}
+
+/* ─── Mode Pill ─────────────────────────────────────────────────────────────── */
+
+.mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  transition: background 0.4s, color 0.4s;
+}
+
+.mode-pill.study {
+  background: var(--amber-light);
+  color: var(--amber-dark);
+}
+
+.mode-pill.break {
+  background: var(--blue-light);
+  color: var(--blue);
+}
+
+/* ─── Ring Timer ────────────────────────────────────────────────────────────── */
+
+.ring-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.ring-svg {
+  display: block;
+}
+
+.ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-time {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.4rem;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Session Actions ───────────────────────────────────────────────────────── */
+
+.session-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.siren-btn {
+  width: 100%;
+  max-width: 320px;
+  padding: 13px 20px;
+  background: var(--siren-light);
+  color: var(--siren);
+  border: 1.5px solid var(--siren);
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, color 0.15s;
+}
+
+.siren-btn:hover {
+  background: var(--siren);
+  color: #fff;
+}
+
+.stop-btn {
+  background: none;
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  padding: 8px 28px;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.stop-btn:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+.task-session-card {
+  width: 100%;
+}
+
+/* Fix 5: break message */
+.break-message {
+  color: var(--blue);
+  font-size: 0.95rem;
+  font-style: italic;
+  text-align: center;
+  padding: 2px 0;
+}
+
+/* ─── Siren Modal ───────────────────────────────────────────────────────────── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 36, 24, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 100;
+}
+
+.siren-modal {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--siren-light);
+  flex-shrink: 0;
+}
+
+.modal-icon {
+  font-size: 1.3rem;
+}
+
+.modal-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  color: var(--siren);
+}
+
+/* ─── Chat Messages ─────────────────────────────────────────────────────────── */
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 80px;
+  max-height: 240px;
+}
+
+.bubble-wrapper {
+  display: flex;
+}
+
+.bubble-wrapper.ai {
+  justify-content: flex-start;
+}
+
+.bubble-wrapper.user {
+  justify-content: flex-end;
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.bubble-ai {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+  color: var(--text);
+}
+
+.bubble-user {
+  background: var(--amber);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* Typing indicator */
+.bubble.typing {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 16px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  animation: blink 1.4s infinite ease-in-out;
+}
+
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* ─── Resume Button ─────────────────────────────────────────────────────────── */
+
+.resume-btn {
+  margin: 4px 16px 8px;
+  padding: 13px;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 12px rgba(74, 140, 92, 0.3);
+  transition: background 0.15s, transform 0.1s;
+  flex-shrink: 0;
+}
+
+.resume-btn:hover {
+  background: #3a7049;
+  transform: translateY(-1px);
+}
+
+/* ─── Chat Input ────────────────────────────────────────────────────────────── */
+
+.chat-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.93rem;
+  color: var(--text);
+  resize: none;
+  outline: none;
+  transition: border-color 0.15s;
+  line-height: 1.5;
+}
+
+.chat-input:focus {
+  border-color: var(--amber);
+}
+
+.chat-input::placeholder {
+  color: var(--text-muted);
+}
+
+.send-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--amber);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.send-btn:hover:not(:disabled) {
+  background: var(--amber-dark);
+}
+
+.send-btn:disabled {
+  background: #d4c8b8;
+  cursor: not-allowed;
+}
